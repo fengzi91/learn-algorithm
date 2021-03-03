@@ -1,0 +1,15 @@
+@import "tailwindcss/base";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+* {
+  font-family: Nunito sans-serif;
+}
+
+@for $i from 1 through 20 {
+  .item-#{$i} {
+    height: 2rem * $i;
+  }
+}
