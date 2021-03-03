@@ -2,7 +2,7 @@
 #### 算法基础学习
 
 #### 经典排序
-- [X] [冒泡排序](https://fengzi91.github.io/llearn-algorithm/dist/#/sort/bubble)
+- [X] [冒泡排序](https://fengzi91.github.io/learn-algorithm/dist/#/sort/bubble)
 - [X] [选择排序](https://fengzi91.github.io/learn-algorithm/dist/#/sort/selection)
 - [X] [插入排序](https://fengzi91.github.io/learn-algorithm/dist/#/sort/insertion)
 - [ ] 希尔排序
