@@ -1,29 +1,14 @@
 # learn-algorithm
+#### 算法基础学习
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#### 经典排序
+- [X] 冒泡排序
+- [X] 选择排序
+- [X] 插入排序
+- [ ] 希尔排序
+- [ ] 归并排序
+- [ ] 快速排序
+- [ ] 堆排序
+- [ ] 计数排序
+- [ ] 桶排序
+- [ ] 基数排序
