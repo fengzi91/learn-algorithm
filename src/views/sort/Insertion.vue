@@ -121,8 +121,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.flip-list-move {
-  transition: transform 0.3s;
-}
-</style>
