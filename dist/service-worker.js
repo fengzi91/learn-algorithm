@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/learn-algorithm/dist/precache-manifest.51eff6bae134c02c0a6a4dec5177e820.js"
+  "/learn-algorithm/dist/precache-manifest.acf7131e9eb3173aa1e9a980b889b82d.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "learn-algorithm"});

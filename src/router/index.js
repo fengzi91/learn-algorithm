@@ -27,6 +27,12 @@ const routes = [
     name: 'InsertionSort',
     component: () =>
       import(/* webpackChunkName: "sort" */ '../views/sort/Insertion.vue')
+  },
+  {
+    path: '/sort/quick',
+    name: 'QuickSort',
+    component: () =>
+      import(/* webpackChunkName: "sort" */ '../views/sort/Quick.vue')
   }
 ]
 

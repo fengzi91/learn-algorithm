@@ -2,106 +2,114 @@
   <div class="container self-start">
     <div class="flex">
       <div
-        class="px-4 py-6 m-4 bg-white rounded-md shadow-md max-w-6xl mx-auto"
+        class="m-4 bg-white rounded-md shadow-md mx-auto w-full max-w-2xl overflow-hidden"
       >
-        <div class="flex justify-between mb-6 items-baseline">
-          <h3 class="text-yellow-500">冒泡排序</h3>
-          <div class="ml-auto">
-            <button
-              class="mx-1 text-indigo-400 ring-indigo-300 hover:text-white disabled:bg-gray-300 disabled:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-              @click="generator"
-              :disabled="sorting"
-            >
-              重新生成
-            </button>
-            <button
-              class="mx-1 text-indigo-400 ring-indigo-300 hover:text-white disabled:bg-gray-300 disabled:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-              @click="handleShuffle"
-              :disabled="sorting"
-            >
-              打乱
-            </button>
-            <button
-              class="mx-1 text-indigo-400 ring-indigo-300 hover:text-white disabled:bg-gray-300 disabled:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-              @click="start"
-              :disabled="sorting"
-            >
-              开始
-            </button>
+        <div class="px-4 py-6">
+          <div class="flex justify-between mb-6 items-baseline">
+            <h3 class="text-yellow-500">冒泡排序</h3>
+            <buttons
+              @sort="sort"
+              @shuffle="shuffle"
+              @start="start"
+              @generator="generator"
+              :sorting="sorting"
+            ></buttons>
+          </div>
+          <div class="flex">
+            <transition-group name="flip-list" tag="div" class="flex items-end">
+              <div
+                class="w-12 mx-2 rounded text-white inline-flex items-center justify-center select-none transition duration-150"
+                v-for="(item, i) in array"
+                :key="item"
+                :class="{
+                  'bg-indigo-500': sortedIndex <= i,
+                  'bg-gray-300': sortedIndex > i,
+                  'bg-red-500': activeLeft === i,
+                  'bg-yellow-500': activeRight === i,
+                  [`item-${item}`]: true
+                }"
+              >
+                {{ item }}
+              </div>
+            </transition-group>
           </div>
         </div>
-        <div class="flex">
-          <transition-group name="flip-list" tag="div" class="flex items-end">
+        <div
+          class="h-12 mt-2 p-2 w-full bg-gray-100 flex justify-between items-center"
+        >
+          <div class="inline-flex items-center">
+            复杂度：<span class="text-yellow-500 text-lg font-medium">{{
+              this.showSteps
+            }}</span>
+          </div>
+          <div class="ml-auto text-white text-xs grid grid-cols-4 items-center">
             <div
-              class="w-12 mx-2 rounded text-white inline-flex items-center justify-center select-none transition duration-150"
-              v-for="(item, i) in array"
-              :key="item"
-              :class="{
-                'bg-indigo-500': sortedIndex <= i,
-                'bg-gray-300': sortedIndex > i,
-                'bg-red-500': activeLeft === i,
-                'bg-yellow-500': activeRight === i,
-                [`item-${item}`]: true
-              }"
+              class="h-6 px-1 bg-gray-300 inline-flex items-center justify-center"
             >
-              {{ item }}
+              待排序
             </div>
-          </transition-group>
+            <div
+              class="h-6 px-1 bg-yellow-500 inline-flex items-center justify-center"
+            >
+              正在对比
+            </div>
+            <div
+              class="h-6 px-1 bg-red-500 inline-flex items-center text-center justify-center"
+            >
+              正在对比
+            </div>
+            <div
+              class="h-6 px-1 bg-indigo-500 inline-flex items-center text-center justify-center"
+            >
+              已排序
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import _ from 'lodash'
+import { wait } from '@/utils'
+import Sort from '@/mixins/Sort'
 export default {
+  mixins: [Sort],
   data: () => ({
-    array: [],
     activeLeft: -1,
     activeRight: -1,
-    sortedIndex: -1,
-    sorting: false
+    sortedIndex: -1
   }),
-  mounted() {
-    this.generator()
-  },
   methods: {
-    async generator() {
-      let length = 8
-      this.array = []
-      this.sortedIndex = length
-      await this.$nextTick()
-      while (length > 0) {
-        const value = parseInt(Math.random() * 12) + 1
-        if (this.array.indexOf(value) < 0) {
-          this.array.push(value)
-          length--
-        }
-      }
+    init() {
+      this.sortedIndex = this.array.length
+      this.totalSteps = 0
     },
     async start() {
       let unsorted = this.array.length - 1
       let sorted = false
-      this.sortedIndex = this.array.length
+      this.init()
       this.sorting = true
       while (!sorted) {
         sorted = true
+        let currentSteps = 0
         for (let i = 0; i < unsorted; i++) {
-          await this.wait()
+          await wait(this.timeout)
           this.activeLeft = i
           this.activeRight = i + 1
+          currentSteps++
           if (this.array[i] > this.array[i + 1]) {
             sorted = false
-            const left = this.array[i]
-            const right = this.array[i + 1]
-            this.$set(this.array, i, right)
-            this.$set(this.array, i + 1, left)
+            // const left = this.array[i]
+            // const right = this.array[i + 1]
+            currentSteps++
+            await this.swap(i, i + 1)
           }
         }
         this.sortedIndex = unsorted
         this.$nextTick(() => {
           unsorted = unsorted - 1
         })
+        this.totalSteps += currentSteps
         if (sorted) {
           this.activeLeft = -1
           this.activeRight = -1
@@ -109,26 +117,6 @@ export default {
           this.sorting = false
         }
       }
-    },
-    async wait() {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve()
-        }, 500)
-      })
-    },
-    async exchange(i, j) {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          this.activeLeft = i
-          this.activeRight = j
-          resolve()
-        }, 500)
-      })
-    },
-    handleShuffle() {
-      this.sortedIndex = this.array.length
-      this.array = _.shuffle(this.array)
     }
   }
 }

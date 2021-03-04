@@ -7,26 +7,13 @@
         <div class="px-4 py-6">
           <div class="flex justify-between mb-6 items-baseline">
             <h3 class="text-yellow-500">选择排序</h3>
-            <div class="ml-auto">
-              <button
-                class="text-indigo-400 ring-indigo-300 hover:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-                @click="generator"
-              >
-                重新生成
-              </button>
-              <button
-                class="text-indigo-400 ring-indigo-300 hover:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-                @click="handleShuffle"
-              >
-                打乱
-              </button>
-              <button
-                class="text-indigo-400 ring-indigo-300 hover:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-                @click="start"
-              >
-                开始
-              </button>
-            </div>
+            <buttons
+              @sort="sort"
+              @shuffle="shuffle"
+              @start="start"
+              @generator="generator"
+              :sorting="sorting"
+            ></buttons>
           </div>
           <div class="flex flex-wrap justify-center">
             <transition-group
@@ -95,38 +82,24 @@
   </div>
 </template>
 <script>
-import { generatorArray, wait } from '@/utils'
-import _ from 'lodash'
-import gsap from 'gsap'
+import { wait } from '@/utils'
+import Sort from '@/mixins/Sort'
 export default {
+  mixins: [Sort],
   data: () => ({
-    array: [],
-    show: true,
     activeIndex: -1,
     compareIndex: -1,
     minIndex: -1,
-    sortedIndex: -1,
-    totalSteps: 0,
-    steps: 0,
-    timeout: 500
+    sortedIndex: -1
   }),
-  computed: {
-    showSteps() {
-      return this.steps.toFixed(0)
-    }
-  },
-  watch: {
-    totalSteps(newValue) {
-      gsap.to(this.$data, { duration: 0.5, steps: newValue })
-    }
-  },
-  mounted() {
-    this.generator()
-  },
   methods: {
-    async start() {
+    init() {
       this.sortedIndex = -1
+    },
+    async start() {
+      this.init()
       this.totalSteps = 0
+      this.sorting = true
       let min = null
       for (let i = 0; i < this.array.length; i++) {
         this.activeIndex = i
@@ -157,22 +130,9 @@ export default {
         this.sortedIndex = i
       }
       this.activeIndex = -1
-      this.minIndex = -1
       this.compareIndex = -1
-    },
-    async generator() {
-      this.show = false
-      const newArray = generatorArray(8, 12)
-      newArray.forEach((v, i) => {
-        this.$set(this.array, i, v)
-      })
-      await wait(500)
-      this.sortedIndex = -1
-      this.show = true
-    },
-    handleShuffle() {
-      this.array = _.shuffle(this.array)
-      this.sortedIndex = -1
+      this.minIndex = -1
+      this.sorting = false
     }
   }
 }

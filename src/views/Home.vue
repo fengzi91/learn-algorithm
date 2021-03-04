@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-6xl mx-auto">
-    <div class="grid grid-cols-3">
+    <div class="grid grid-cols-4 gap-4">
       <div
-        class="shadow-sm px-4 py-6 rounded-md mx-4 text-center bg-white"
+        class="shadow-sm px-4 py-6 rounded-md text-center bg-white"
         v-for="(item, index) in items"
         :key="index"
       >
@@ -35,6 +35,11 @@ export default {
         name: '插入排序',
         link: '/sort/insertion',
         route: 'InsertionSort'
+      },
+      {
+        name: '快速排序',
+        link: '/sort/quick',
+        route: 'QuickSort'
       }
     ]
   })

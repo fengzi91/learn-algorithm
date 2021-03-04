@@ -7,7 +7,7 @@
 - [X] [插入排序](https://fengzi91.github.io/learn-algorithm/dist/#/sort/insertion)
 - [ ] 希尔排序
 - [ ] 归并排序
-- [ ] 快速排序
+- [ ] [快速排序](https://fengzi91.github.io/learn-algorithm/dist/#/sort/quick)
 - [ ] 堆排序
 - [ ] 计数排序
 - [ ] 桶排序

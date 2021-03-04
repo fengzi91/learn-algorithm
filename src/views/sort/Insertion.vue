@@ -7,26 +7,13 @@
         <div class="px-4 py-6">
           <div class="flex justify-between mb-6 items-baseline">
             <h3 class="text-yellow-500">插入排序</h3>
-            <div class="ml-auto">
-              <button
-                class="text-indigo-400 ring-indigo-300 hover:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-                @click="generator"
-              >
-                重新生成
-              </button>
-              <button
-                class="text-indigo-400 ring-indigo-300 hover:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-                @click="handleShuffle"
-              >
-                打乱
-              </button>
-              <button
-                class="text-indigo-400 ring-indigo-300 hover:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
-                @click="start"
-              >
-                开始
-              </button>
-            </div>
+            <buttons
+              @sort="sort"
+              @shuffle="shuffle"
+              @start="start"
+              @generator="generator"
+              :sorting="sorting"
+            ></buttons>
           </div>
           <div class="flex h-36 flex-wrap items-center">
             <transition-group name="flip-list" tag="div" v-if="show">
@@ -89,70 +76,47 @@
   </div>
 </template>
 <script>
-import { generatorArray, wait } from '@/utils'
-import _ from 'lodash'
-import gsap from 'gsap'
+import { wait } from '@/utils'
+import Sort from '@/mixins/Sort'
 export default {
+  mixins: [Sort],
   data: () => ({
-    array: [],
-    show: true,
     activeIndex: -1,
     compareIndex: -1,
     minIndex: -1,
-    sortedIndex: -1,
-    totalSteps: 0,
-    steps: 0,
-    timeout: 500
+    sortedIndex: -1
   }),
-  computed: {
-    showSteps() {
-      return this.steps.toFixed(0)
-    }
-  },
-  watch: {
-    totalSteps(newValue) {
-      gsap.to(this.$data, { duration: 0.5, steps: newValue })
-    }
-  },
-  mounted() {
-    this.generator()
-  },
   methods: {
     async start() {
       this.sortedIndex = -1
       this.totalSteps = 0
+      this.sorting = true
+      this.totalSteps = 0
+
       for (let i = 1; i < this.array.length; i++) {
+        let currentSteps = 0
         this.activeIndex = i
         let position = i
+        // 取出数据
+        currentSteps++
         const tempValue = this.array[i]
         while (position > 0 && this.array[position - 1] > tempValue) {
           this.compareIndex = position - 1
           await wait(this.timeout)
+          currentSteps++
           this.$set(this.array, position, this.array[position - 1])
           position--
         }
+        // 修改数据
+        currentSteps++
         this.$set(this.array, position, tempValue)
         await wait(this.timeout)
         this.activeIndex = -1
         await wait(this.timeout)
+        this.totalSteps += currentSteps
       }
       this.activeIndex = -1
-    },
-    async generator() {
-      this.show = false
-      const newArray = generatorArray(10, 30)
-      newArray.forEach((v, i) => {
-        this.$set(this.array, i, v)
-      })
-      await wait(500)
-      this.sortedIndex = -1
-      this.activeIndex = -1
-      this.show = true
-    },
-    handleShuffle() {
-      this.array = _.shuffle(this.array)
-      this.sortedIndex = -1
-      this.activeIndex = -1
+      this.sorting = false
     }
   }
 }
