@@ -1,5 +1,5 @@
 <template>
-  <div class="ml-auto flex gap-2">
+  <div class="ml-auto flex gap-2 text-sm">
     <button
       class="text-indigo-400 ring-indigo-300 hover:text-white disabled:bg-gray-300 disabled:text-white active:ring hover:bg-indigo-400 rounded px-2 py-1 focus:outline-none transition ease-in-out duration-150"
       @click="generator"

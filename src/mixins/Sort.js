@@ -27,7 +27,8 @@ export default {
     steps: 0,
     array: [],
     show: true,
-    sorting: false
+    sorting: false,
+    sorted: false
   }),
   methods: {
     init() {},
@@ -40,6 +41,9 @@ export default {
       await wait(this.timeout)
       this.init()
       this.show = true
+      if (typeof this.afterGenerator === 'function') {
+        await this.afterGenerator()
+      }
       return newArray
     },
     async swap(left, right) {
@@ -51,6 +55,9 @@ export default {
     shuffle() {
       this.array = _.shuffle(this.array)
       this.init()
+      if (typeof this.afterShuffle === 'function') {
+        this.afterShuffle()
+      }
     },
     /**
      * 将预排序数组以正序排好
@@ -62,6 +69,9 @@ export default {
         this.$set(this.array, i, array[i])
       })
       this.init()
+      if (typeof this.afterSort === 'function') {
+        this.afterSort()
+      }
     }
   }
 }
