@@ -1,6 +1,6 @@
 export const generatorArray = (length = -1, max = 12, canRepeat = false) => {
   length = length < 0 ? parseInt(Math.random() * 7) + 5 : length
-  if (max < length) {
+  if (max < length && !canRepeat) {
     throw new Error('max number must be grate then length')
   }
   const array = []

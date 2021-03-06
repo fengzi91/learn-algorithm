@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    speed: 5
+    speed: 5,
+    count: 10
   },
   mutations: {
     SET_SPEED(state, speed) {
       state.speed = speed
+    },
+    SET_GENERATOR_LENGTH(state, count) {
+      state.count = count
     }
   },
   actions: {},

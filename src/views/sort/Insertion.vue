@@ -1,72 +1,43 @@
 <template>
   <div class="container self-start">
     <div class="flex">
-      <div
-        class="m-4 bg-white rounded-md shadow-md mx-auto w-full max-w-2xl overflow-hidden"
+      <card
+        title="插入排序"
+        @sort="sort"
+        @shuffle="shuffle"
+        @start="start"
+        @generator="generator"
+        :sorting="sorting"
+        :steps="showSteps"
+        :badges="badges"
       >
-        <div class="px-4 py-6">
-          <div class="flex justify-between mb-6 items-baseline">
-            <h3 class="text-yellow-500">插入排序</h3>
-            <buttons
-              @sort="sort"
-              @shuffle="shuffle"
-              @start="start"
-              @generator="generator"
-              :sorting="sorting"
-            ></buttons>
-          </div>
-          <div class="flex h-36 flex-wrap items-center relative pt-12">
-            <template v-for="(i, index) in animateArray">
-              <div
-                :key="`item-${index}`"
-                class="w-12 h-12 duration-500 transform text-white select-none transition ease-in-out absolute"
-                style="left: 0; top: 3rem"
-                :style="`transform: translate(${i.css.x}rem, ${i.css.y}rem)`"
-              >
-                <div
-                  class="w-12 h-12 p-2 rounded inline-flex items-center justify-center"
-                  :class="[
-                    `bg-gray-300`,
-                    {
-                      'bg-red-500': index === activeIndex,
-                      'bg-yellow-500': i.value === array[compareIndex],
-                      'bg-indigo-500': sorted
-                    }
-                  ]"
-                >
-                  {{ i.value }}
-                </div>
-              </div>
-            </template>
-          </div>
-        </div>
         <div
-          class="h-12 mt-2 p-2 w-full bg-gray-100 flex justify-between items-center"
+          class="flex h-36 flex-wrap justify-center items-center relative pt-12"
         >
-          <div class="inline-flex items-center">
-            复杂度：<span class="text-yellow-500 text-lg font-medium">{{
-              this.showSteps
-            }}</span>
-          </div>
-          <div class="ml-auto text-white text-xs grid grid-cols-3 items-center">
+          <template v-for="(i, index) in animateArray">
             <div
-              class="h-6 px-1 bg-red-500 inline-flex items-center text-center justify-center"
+              :key="`item-${index}`"
+              class="w-12 h-12 duration-500 transform text-white select-none transition ease-out absolute"
+              style="left: 0; top: 3rem"
+              :style="`transform: translate(${i.css.x}rem, ${i.css.y}rem)`"
             >
-              选中元素
+              <div
+                class="w-12 h-12 p-2 rounded inline-flex items-center justify-center"
+                :class="[
+                  `bg-gray-300`,
+                  {
+                    'bg-red-500': index === activeIndex,
+                    'bg-yellow-500': i.value === array[compareIndex],
+                    'bg-indigo-500': sorted
+                  }
+                ]"
+              >
+                {{ i.value }}
+              </div>
             </div>
-            <div
-              class="h-6 px-1 bg-yellow-500 inline-flex items-center text-center justify-center"
-            >
-              正在对比
-            </div>
-            <div
-              class="h-6 px-1 bg-indigo-500 inline-flex items-center text-center justify-center"
-            >
-              已排序
-            </div>
-          </div>
+          </template>
         </div>
-      </div>
+      </card>
     </div>
   </div>
 </template>
@@ -81,7 +52,21 @@ export default {
     compareIndex: -1,
     minIndex: -1,
     sortedIndex: -1,
-    animateArray: [] // 用于展示动画的数组
+    animateArray: [], // 用于展示动画的数组
+    badges: [
+      {
+        text: '选中元素',
+        color: 'bg-red-500'
+      },
+      {
+        text: '正在对比',
+        color: 'bg-yellow-500'
+      },
+      {
+        text: '已排序',
+        color: 'bg-indigo-500'
+      }
+    ]
   }),
   methods: {
     afterSort() {

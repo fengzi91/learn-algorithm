@@ -1,71 +1,35 @@
 <template>
   <div class="container self-start">
     <div class="flex">
-      <div
-        class="m-4 bg-white rounded-md shadow-md mx-auto w-full max-w-2xl overflow-hidden"
+      <card
+        title="冒泡排序"
+        @sort="sort"
+        @shuffle="shuffle"
+        @start="start"
+        @generator="generator"
+        :sorting="sorting"
+        :badges="badges"
+        :steps="showSteps"
       >
-        <div class="px-4 py-6">
-          <div class="flex justify-between mb-6 items-baseline">
-            <h3 class="text-yellow-500">冒泡排序</h3>
-            <buttons
-              @sort="sort"
-              @shuffle="shuffle"
-              @start="start"
-              @generator="generator"
-              :sorting="sorting"
-            ></buttons>
-          </div>
-          <div class="flex">
-            <transition-group name="flip-list" tag="div" class="flex items-end">
-              <div
-                class="w-12 mx-2 rounded text-white inline-flex items-center justify-center select-none transition duration-150"
-                v-for="(item, i) in array"
-                :key="item"
-                :class="{
-                  'bg-indigo-500': sortedIndex <= i,
-                  'bg-gray-300': sortedIndex > i,
-                  'bg-red-500': activeLeft === i,
-                  'bg-yellow-500': activeRight === i,
-                  [`item-${item}`]: true
-                }"
-              >
-                {{ item }}
-              </div>
-            </transition-group>
-          </div>
+        <div class="flex justify-center">
+          <transition-group name="flip-list" tag="div" class="flex items-end">
+            <div
+              class="w-12 mx-2 rounded text-white inline-flex items-center justify-center select-none transition duration-150"
+              v-for="(item, i) in array"
+              :key="item"
+              :class="{
+                'bg-indigo-500': sortedIndex <= i,
+                'bg-gray-300': sortedIndex > i,
+                'bg-red-500': activeLeft === i,
+                'bg-yellow-500': activeRight === i,
+                [`item-${item}`]: true
+              }"
+            >
+              {{ item }}
+            </div>
+          </transition-group>
         </div>
-        <div
-          class="h-12 mt-2 p-2 w-full bg-gray-100 flex justify-between items-center"
-        >
-          <div class="inline-flex items-center">
-            复杂度：<span class="text-yellow-500 text-lg font-medium">{{
-              this.showSteps
-            }}</span>
-          </div>
-          <div class="ml-auto text-white text-xs grid grid-cols-4 items-center">
-            <div
-              class="h-6 px-1 bg-gray-300 inline-flex items-center justify-center"
-            >
-              待排序
-            </div>
-            <div
-              class="h-6 px-1 bg-yellow-500 inline-flex items-center justify-center"
-            >
-              正在对比
-            </div>
-            <div
-              class="h-6 px-1 bg-red-500 inline-flex items-center text-center justify-center"
-            >
-              正在对比
-            </div>
-            <div
-              class="h-6 px-1 bg-indigo-500 inline-flex items-center text-center justify-center"
-            >
-              已排序
-            </div>
-          </div>
-        </div>
-      </div>
+      </card>
     </div>
   </div>
 </template>
@@ -77,7 +41,25 @@ export default {
   data: () => ({
     activeLeft: -1,
     activeRight: -1,
-    sortedIndex: -1
+    sortedIndex: -1,
+    badges: [
+      {
+        text: '待排序',
+        color: 'bg-gray-300'
+      },
+      {
+        text: '正在对比',
+        color: 'bg-yellow-500'
+      },
+      {
+        text: '正在对比',
+        color: 'bg-red-500'
+      },
+      {
+        text: '已排序',
+        color: 'bg-indigo-500'
+      }
+    ]
   }),
   methods: {
     init() {

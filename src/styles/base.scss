@@ -2,6 +2,25 @@
 
 @import "tailwindcss/components";
 
+.btn-primary {
+  @apply select-none bg-blue-500 text-white rounded-md px-4 py-2 transition ease-in-out duration-150
+}
+.btn-primary:visited{
+  @apply outline-none
+}
+.btn-primary:focus {
+  @apply outline-none
+}
+.btn-primary:hover {
+  @apply bg-blue-600 outline-none
+}
+.btn-primary:active {
+  @apply ring ring-blue-300
+}
+.btn-primary:disabled {
+  @apply opacity-25
+}
+
 @import "tailwindcss/utilities";
 
 * {

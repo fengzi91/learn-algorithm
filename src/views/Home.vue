@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-6xl mx-auto">
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div
         class="shadow-sm px-4 py-6 rounded-md text-center bg-white"
         v-for="(item, index) in items"

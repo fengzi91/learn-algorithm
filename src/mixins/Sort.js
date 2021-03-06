@@ -1,10 +1,10 @@
 import gsap from 'gsap'
 import { generatorArray, wait } from '@/utils'
 import _ from 'lodash'
-import Buttons from '@/components/Buttons'
+import Card from '@/components/Card'
 export default {
   components: {
-    Buttons
+    Card
   },
   mounted() {
     this.generator()
@@ -33,11 +33,16 @@ export default {
   methods: {
     init() {},
     async generator() {
+      if (typeof this.beforeGenerator === 'function') {
+        await this.beforeGenerator()
+      }
       this.show = false
-      const newArray = generatorArray(10, 10)
-      newArray.forEach((v, i) => {
-        this.$set(this.array, i, v)
-      })
+      const length = this.$store.state.count
+      const newArray = generatorArray(length, 10)
+      // newArray.forEach((v, i) => {
+      //   this.$set(this.array, i, v)
+      // })
+      this.array = newArray
       await wait(this.timeout)
       this.init()
       this.show = true
