@@ -20,6 +20,7 @@
         <span class="text-sm">复杂度:</span
         ><span class="text-lg">{{ steps }}</span>
       </div-->
+
       <div
         class="ml-auto text-white text-xs grid items-center"
         :class="`grid-cols-${badges.length}`"
